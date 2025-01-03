@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>녹우회 스크린 스코어보드</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+            -webkit-text-size-adjust: 100%;
+        }
+        .score-cell {
+            width: 40px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f8f9fa;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .completed-hole {
+            background-color: #ebfaeb !important;
+        }
+        .current-hole {
+            background-color: #fff3bf !important;
+        }
+        .team-members {
+            font-size: 0.9rem;
+            line-height: 1.2;
+            background-color: #ffffff;
+        }
+        .score-table th {
+            background-color: #e9ecef;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        .modal-content {
+            border-radius: 15px;
+        }
+        .header {
+            background-color: #495057;
+            color: white;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        .table-responsive {
+            margin-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+        #backButton {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+        }
+        .game-info {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        .date-info {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        .instruction-text {
+            color: #ffc107;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-top: 10px;
+        }
+        input[type="date"],
+        select,
+        input[type="number"] {
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 4px !important;
+            font-size: 16px !important;
+            border: 1px solid #ced4da;
+            background-color: #fff;
+        }
+        #noDataMessage {
+            display: none;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            color: #721c24;
+            text-align: center;
+        }
+        .alert-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 15px 20px;
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            z-index: 9999;
+            text-align: center;
+            min-width: 200px;
+        }
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        .score-input {
+            width: 100%;
+            text-align: center;
+            font-size: 20px !important;
+            padding: 10px;
+        }
+        @supports (-webkit-touch-callout: none) {
+            input, select {
+                font-size: 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container position-relative">
+            <button id="backButton" class="btn btn-light btn-sm d-none">
+                ← 돌아가기
+            </button>
+            <h1 class="text-center h3 mb-3">녹우회 스크린 스코어보드</h1>
+            <div id="gameInfo" class="text-center game-info d-none">
+                <div class="date-info"></div>
+                <div class="instruction-text">
+                    해당 홀의 점수 칸을 클릭하여 점수를 입력 하세요.<br>
+                    경기종료 후 스크린의 스코어카드를 촬영하여 경기위원장 에게 카톡으로 전송 하세요.
+                </div>
+            </div>
+            <div id="loginSection" class="row g-3 align-items-center justify-content-center">
+                <div class="col-auto">
+                    <input type="date" id="gameDate" class="form-control">
+                </div>
+                <div class="col-auto">
+                    <select id="playerSelect" class="form-select">
+                        <option value="">참가자 선택</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button id="enterBtn" class="btn btn-light">입장</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="noDataMessage" class="alert alert-warning text-center">
+            선택한 날짜의 경기 데이터가 없습니다.
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-bordered score-table">
+                <thead>
+                    <tr>
+                        <th>조</th>
+                        <th>팀원</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                    </tr>
+                </thead>
+                <tbody id="front9Body">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered score-table">
+                <thead>
+                    <tr>
+                        <th>조</th>
+                        <th>팀원</th>
+                        <th>10</th>
+                        <th>11</th>
+                        <th>12</th>
+                        <th>13</th>
+                        <th>14</th>
+                        <th>15</th>
+                        <th>16</th>
+                        <th>17</th>
+                        <th>18</th>
+                    </tr>
+                </thead>
+                <tbody id="back9Body">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered score-table">
+                <thead>
+                    <tr>
+                        <th>조</th>
+                        <th>팀원</th>
+                        <th>합계</th>
+                    </tr>
+                </thead>
+                <tbody id="totalBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="scoreModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">점수 입력</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalInfo" class="text-center mb-3"></p>
+                    <div class="form-group">
+                        <input type="number" inputmode="numeric" pattern="-?[0-9]*" id="scoreInput" class="form-control score-input">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="saveScore">입력</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCqbwbCQ7CD11oDpvidHI8jsND0R56u4KI",
+            authDomain: "golfscoreboard-fe3c2.firebaseapp.com",
+            projectId: "golfscoreboard-fe3c2",
+            storageBucket: "golfscoreboard-fe3c2.firebasestorage.app",
+            messagingSenderId: "341450077662",
+            appId: "1:341450077662:web:2ba1afc76962fbd158594f"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        let currentUser = null;
+        let currentTeam = null;
+        let isGuest = false;
+        let scoreModal = null;
+        let unsubscribe = null;
+
+        const gameDateInput = document.getElementById('gameDate');
+        const playerSelect = document.getElementById('playerSelect');
+        const enterBtn = document.getElementById('enterBtn');
+        const backButton = document.getElementById('backButton');
+        const loginSection = document.getElementById('loginSection');
+        const gameInfo = document.getElementById('gameInfo');
+        const noDataMessage = document.getElementById('noDataMessage');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function showAlert(message, isError = false) {
+            const alert = document.createElement('div');
+            alert.className = 'alert-overlay';
+            alert.style.backgroundColor = isError ? 'rgba(220, 53, 69, 0.9)' : 'rgba(40, 167, 69, 0.9)';
+            alert.textContent = message;
+            document.body.appendChild(alert);
+
+            setTimeout(() => {
+                alert.classList.add('fade-out');
+                setTimeout(() => alert.remove(), 500);
+            }, 2000);
+        }
+
+        async function initializeApp() {
+            try {
+                scoreModal = new bootstrap.Modal(document.getElementById('scoreModal'));
+                
+                // 오늘 날짜 설정
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                const todayString = `${year}-${month}-${day}`;
+                
+                gameDateInput.value = todayString;
+                
+                // 초기 데이터 로드
+                await loadPlayers(todayString);
+                
+                // 이벤트 리스너 설정
+                setupEventListeners();
+            } catch (error) {
+                console.error('Error initializing app:', error);
+                showAlert('초기화 중 오류가 발생했습니다.', true);
+            }
+        }
+
+        function setupEventListeners() {
+            gameDateInput.addEventListener('change', async () => {
+                await loadPlayers(gameDateInput.value);
+            });
+            enterBtn.addEventListener('click', enterGame);
+            backButton.addEventListener('click', goBack);
+            document.getElementById('saveScore').addEventListener('click', saveScore);
+
+            document.addEventListener('touchstart', function(e) {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(e) {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, { passive: false });
+        }
+
+        async function loadPlayers(selectedDate) {
+            try {
+                console.log('Loading players for date:', selectedDate);
+
+                const querySnapshot = await db.collection("golfscoreboard")
+                    .where("gameDate", "==", selectedDate)
+                    .get();
+
+                playerSelect.innerHTML = '<option value="">참가자 선택</option>';
+                playerSelect.innerHTML += '<option value="guest">게스트</option>';
+
+                if (querySnapshot.empty) {
+                    noDataMessage.style.display = 'block';
+                    return;
+                }
+
+                noDataMessage.style.display = 'none';
+
+                const sortedDocs = Array.from(querySnapshot.docs).sort((a, b) => {
+                    const aNum = parseInt(a.data().teamNumber) || 0;
+                    const bNum = parseInt(b.data().teamNumber) || 0;
+                    return aNum - bNum;
+                });
+
+                sortedDocs.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.teamMembers && typeof data.teamMembers === 'string') {
+                        const teamMembers = data.teamMembers.split(',');
+                        teamMembers.forEach(member => {
+                            const trimmedMember = member.trim();
+                            if (trimmedMember) {
+                                const option = document.createElement('option');
+                                option.value = trimmedMember;
+                                option.textContent = `${data.teamNumber}조 - ${trimmedMember}`;
+                                playerSelect.appendChild(option);
+                            }
+                        });
+                    }
+                });
+
+                if (playerSelect.options.length <= 2) {
+                    noDataMessage.style.display = 'block';
+                }
+
+                console.log('Total options loaded:', playerSelect.options.length);
+            } catch (error) {
+                console.error("Error loading players:", error);
+                showAlert('데이터 로드 중 오류가 발생했습니다.', true);
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            return new Intl.DateTimeFormat('ko-KR', options).format(date);
+        }
+
+        function goBack() {
+            if (unsubscribe) {
+                unsubscribe();
+                unsubscribe = null;
+            }
+
+            loginSection.classList.remove('d-none');
+            backButton.classList.add('d-none');
+            gameInfo.classList.add('d-none');
+            noDataMessage.style.display = 'none';
+            
+            currentUser = null;
+            currentTeam = null;
+            isGuest = false;
+            
+            ['front9Body', 'back9Body', 'totalBody'].forEach(id => {
+                document.getElementById(id).innerHTML = '';
+            });
+        }
+
+        async function enterGame() {
+            currentUser = playerSelect.value;
+            isGuest = currentUser === 'guest';
+            
+            if (!currentUser) {
+                showAlert('참가자를 선택해주세요.', true);
+                return;
+            }
+
+            const gameDate = gameDateInput.value;
+            
+            if (unsubscribe) {
+                unsubscribe();
+            }
+
+            try {
+                unsubscribe = db.collection("golfscoreboard")
+                    .where("gameDate", "==", gameDate)
+                    .onSnapshot((snapshot) => {
+                        if (snapshot.empty) {
+                            noDataMessage.style.display = 'block';
+                            return;
+                        }
+                        noDataMessage.style.display = 'none';
+                        updateScoreboards(snapshot.docs);
+                    }, (error) => {
+                        console.error("Error setting up real-time updates:", error);
+                        showAlert('실시간 업데이트 중 오류가 발생했습니다.', true);
+                    });
+
+                loginSection.classList.add('d-none');
+                backButton.classList.remove('d-none');
+                gameInfo.classList.remove('d-none');
+                gameInfo.querySelector('.date-info').textContent = `경기일자: ${formatDate(gameDate)}`;
+            } catch (error) {
+                console.error("Error entering game:", error);
+                showAlert('게임 입장 중 오류가 발생했습니다.', true);
+            }
+        }
+
+        function updateScoreboards(docs) {
+            const front9Body = document.getElementById('front9Body');
+            const back9Body = document.getElementById('back9Body');
+            const totalBody = document.getElementById('totalBody');
+
+            front9Body.innerHTML = '';
+            back9Body.innerHTML = '';
+            totalBody.innerHTML = '';
+
+            const sortedDocs = docs.sort((a, b) => {
+                return parseInt(a.data().teamNumber) - parseInt(b.data().teamNumber);
+            });
+
+            sortedDocs.forEach((doc) => {
+                const data = doc.data();
+                const isCurrentTeam = !isGuest && data.teamMembers && data.teamMembers.includes(currentUser);
+                if (isCurrentTeam) currentTeam = data.teamNumber;
+
+                const front9Row = createTeamRow(data, 1, 9, isCurrentTeam);
+                front9Body.appendChild(front9Row);
+
+                const back9Row = createTeamRow(data, 10, 18, isCurrentTeam);
+                back9Body.appendChild(back9Row);
+
+                const totalRow = document.createElement('tr');
+                totalRow.innerHTML = `
+                    <td>${data.teamNumber}</td>
+                    <td class="team-members">${formatTeamMembers(data.teamMembers)}</td>
+                    <td>${calculateTotal(data)}</td>
+                `;
+                totalBody.appendChild(totalRow);
+            });
+        }
+
+        function createTeamRow(data, start, end, isCurrentTeam) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${data.teamNumber}</td>
+                <td class="team-members">${formatTeamMembers(data.teamMembers)}</td>
+            `;
+
+            for (let i = start; i <= end; i++) {
+                const cell = document.createElement('td');
+                cell.classList.add('score-cell');
+                
+                const currentScore = data[`hole${i}`];
+                cell.textContent = currentScore || '0';
+                
+                if (data.currentHole) {
+                    if (i < data.currentHole) {
+                        cell.classList.add('completed-hole');
+                    } else if (i === parseInt(data.currentHole)) {
+                        cell.classList.add('current-hole');
+                    }
+                }
+
+                if (isCurrentTeam && !isGuest) {
+                    cell.onclick = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openScoreModal(data.teamNumber, data.teamMembers, i);
+                    };
+                }
+
+                row.appendChild(cell);
+            }
+
+            if (!isCurrentTeam || isGuest) {
+                row.classList.add('disabled');
+            }
+
+            return row;
+        }
+
+        function formatTeamMembers(members) {
+            if (!members) return '';
+            const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
+            if (memberArray.length > 2) {
+                return memberArray.slice(0, 2).join(', ') + '<br>' + memberArray.slice(2).join(', ');
+            }
+            return memberArray.join(', ');
+        }
+
+        function calculateTotal(data) {
+            let total = 0;
+            for (let i = 1; i <= 18; i++) {
+                const score = parseInt(data[`hole${i}`]) || 0;
+                total += score;
+            }
+            return total.toString();
+        }
+
+        function openScoreModal(teamNumber, teamMembers, hole) {
+            const modalInfo = document.getElementById('modalInfo');
+            const scoreInput = document.getElementById('scoreInput');
+            
+            modalInfo.textContent = `${teamNumber}조 / ${teamMembers} / ${hole}번 홀`;
+            scoreInput.value = '';
+            
+            scoreModal.show();
+
+            setTimeout(() => {
+                scoreInput.focus();
+            }, 300);
+
+            scoreInput.onkeypress = function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('saveScore').click();
+                }
+            };
+        }
+
+        async function saveScore() {
+            const scoreInput = document.getElementById('scoreInput');
+            const score = parseInt(scoreInput.value);
+            
+            if (isNaN(score)) {
+                showAlert('유효한 점수를 입력해주세요', true);
+                return;
+            }
+
+            try {
+                const gameDate = gameDateInput.value;
+                const querySnapshot = await db.collection("golfscoreboard")
+                    .where("gameDate", "==", gameDate)
+                    .where("teamNumber", "==", currentTeam)
+                    .get();
+
+                if (!querySnapshot.empty) {
+                    const docRef = querySnapshot.docs[0].ref;
+                    const docData = querySnapshot.docs[0].data();
+                    const modalInfo = document.getElementById('modalInfo').textContent;
+                    const hole = parseInt(modalInfo.split('/')[2]);
+                    const currentHole = parseInt(docData.currentHole) || 0;
+                    
+                    const updates = {
+                        [`hole${hole}`]: score
+                    };
+                    
+                    if (hole > currentHole) {
+                        updates.currentHole = hole;
+                    }
+                    
+                    await docRef.update(updates);
+                    scoreModal.hide();
+                    scoreInput.value = '';
+                    showAlert('점수가 저장되었습니다');
+                }
+            } catch (error) {
+                console.error("Error saving score:", error);
+                showAlert('점수 저장 중 오류가 발생했습니다.', true);
+            }
+        }
+
+        window.addEventListener('offline', function() {
+            showAlert('인터넷 연결이 끊겼습니다. 다시 연결되면 자동으로 동기화됩니다.', true);
+        });
+
+        window.addEventListener('online', function() {
+            showAlert('인터넷에 다시 연결되었습니다.');
+            loadPlayers(gameDateInput.value);
+        });
+
+        window.addEventListener('beforeunload', function() {
+            if (unsubscribe) {
+                unsubscribe();
+            }
+        });
+    </script>
+</body>
+</html>
