@@ -14,11 +14,15 @@
             -webkit-text-size-adjust: 100%;
         }
         .score-cell {
-            width: 40px;
+            width: 32px;
+            min-width: 32px;
+            max-width: 32px;
             text-align: center;
             cursor: pointer;
             background-color: #f8f9fa;
             -webkit-tap-highlight-color: transparent;
+            padding: 4px 2px !important;
+            font-size: 0.9rem;
         }
         .completed-hole {
             background-color: #ebfaeb !important;
@@ -27,25 +31,39 @@
             background-color: #fff3bf !important;
         }
         .team-members {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             line-height: 1.2;
             background-color: #ffffff;
+            padding: 4px 6px !important;
+            min-width: 70px;
+        }
+        .score-table {
+            table-layout: fixed;
+            width: 100%;
+            margin: 0;
         }
         .score-table th {
             background-color: #e9ecef;
+            font-size: 0.85rem;
+            padding: 6px 2px !important;
+            text-align: center;
         }
-        .disabled {
-            pointer-events: none;
-            opacity: 0.6;
-        }
-        .modal-content {
-            border-radius: 15px;
+        .score-table td:first-child {
+            width: 30px;
+            min-width: 30px;
+            padding: 4px 2px !important;
+            text-align: center;
+            font-size: 0.85rem;
         }
         .header {
             background-color: #495057;
             color: white;
-            padding: 15px 0;
-            margin-bottom: 20px;
+            padding: 12px 0;
+            margin-bottom: 10px;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.6;
         }
         .table-responsive {
             margin-bottom: 20px;
@@ -70,6 +88,42 @@
             line-height: 1.4;
             margin-top: 10px;
         }
+
+        /* 모바일 최적화 */
+        @media (max-width: 576px) {
+            .header {
+                padding: 8px 0;
+                margin-bottom: 8px;
+            }
+            .header h1 {
+                font-size: 1.25rem;
+                margin-bottom: 8px !important;
+            }
+            .instruction-text {
+                font-size: 0.8rem;
+                margin-top: 6px;
+            }
+            .game-info {
+                margin-bottom: 8px;
+                font-size: 0.95rem;
+            }
+            .date-info {
+                margin-bottom: 6px;
+                font-size: 0.95rem;
+            }
+            .table-responsive {
+                margin-bottom: 10px;
+            }
+            .score-table {
+                margin-bottom: 0;
+            }
+            .container {
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+        }
+
+        /* 입력 필드 스타일링 */
         input[type="date"],
         select,
         input[type="number"] {
@@ -80,36 +134,8 @@
             border: 1px solid #ced4da;
             background-color: #fff;
         }
-        #noDataMessage {
-            display: none;
-            padding: 10px;
-            margin: 10px 0;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            border-radius: 4px;
-            color: #721c24;
-            text-align: center;
-        }
-        .alert-overlay {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 15px 20px;
-            border-radius: 8px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            z-index: 9999;
-            text-align: center;
-            min-width: 200px;
-        }
-        .fade-out {
-            animation: fadeOut 0.5s ease-out forwards;
-        }
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
+
+        /* 점수 입력 모달 스타일링 */
         .score-input {
             width: calc(100% - 80px);
             text-align: center;
@@ -138,6 +164,8 @@
         .score-button:active {
             background-color: #e9ecef;
         }
+        
+        /* iOS Safari 최적화 */
         @supports (-webkit-touch-callout: none) {
             input, select {
                 font-size: 16px !important;
