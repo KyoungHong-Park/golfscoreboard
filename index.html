@@ -557,7 +557,7 @@
                     const totalRow = document.createElement('tr');
                     totalRow.innerHTML = `
                         <td>${data.teamNumber}</td>
-                        <td class="team-members">${formatTeamMembers(data.teamMembers)}</td>
+                        <td class="team-members">${formatTeamMembersFull(data.teamMembers)}</td>
                         <td>${calculateTotal(data)}</td>
                     `;
                     totalBody.appendChild(totalRow);
@@ -573,7 +573,7 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${data.teamNumber}</td>
-                    <td class="team-members">${formatTeamMembers(data.teamMembers)}</td>
+                    <td class="team-members">${formatTeamMembersShort(data.teamMembers)}</td>
                 `;
 
                 for (let i = start; i <= end; i++) {
@@ -613,7 +613,50 @@
             }
         }
 
-        function formatTeamMembers(members) {
+		function formatTeamMembers(members, isTotal = false) {
+            if (!members) return '';
+            try {
+                const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
+                
+                if (isTotal) {
+                    // 합계 테이블용 - 전체 이름 표시
+                    if (memberArray.length > 2) {
+                        return memberArray.slice(0, 2).join(', ') + '<br>' + memberArray.slice(2).join(', ');
+                    }
+                    return memberArray.join(', ');
+                } else {
+                    // 1-9홀, 10-18홀 테이블용 - 첫 글자만 표시
+                    const shortNames = memberArray.map(name => name.charAt(0));
+                    if (shortNames.length > 2) {
+                        return shortNames.slice(0, 2).join(', ') + '<br>' + shortNames.slice(2).join(', ');
+                    }
+                    return shortNames.join(', ');
+                }
+            } catch (error) {
+                console.error("Error formatting team members:", error);
+                return '';
+            }
+        }
+		
+
+		// 1-9홀, 10-18홀 테이블용 - 첫 글자만 표시
+        function formatTeamMembersShort(members) {
+            if (!members) return '';
+            try {
+                const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
+                const shortNames = memberArray.map(name => name.charAt(0));
+                if (shortNames.length > 2) {
+                    return shortNames.slice(0, 2).join(', ') + '<br>' + shortNames.slice(2).join(', ');
+                }
+                return shortNames.join(', ');
+            } catch (error) {
+                console.error("Error formatting short team members:", error);
+                return '';
+            }
+        }
+
+        // 합계 테이블용 - 전체 이름 표시
+        function formatTeamMembersFull(members) {
             if (!members) return '';
             try {
                 const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
@@ -622,7 +665,7 @@
                 }
                 return memberArray.join(', ');
             } catch (error) {
-                console.error("Error formatting team members:", error);
+                console.error("Error formatting full team members:", error);
                 return '';
             }
         }
