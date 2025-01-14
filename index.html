@@ -14,144 +14,145 @@
             -webkit-text-size-adjust: 100%;
         }
 
-		/* 기존 스타일을 다음과 같이 수정/추가합니다 */
-		.score-cell {
-			width: 26px;
-			min-width: 26px;
-			max-width: 26px;
-			text-align: center;
-			cursor: pointer;
-			background-color: #f8f9fa;
-			-webkit-tap-highlight-color: transparent;
-			padding: 1px 0px !important;
-			font-size: 0.75rem;
-		}
-		
-		.team-members {
-			font-size: 0.75rem;
-			line-height: 1.2;
-			background-color: #ffffff;
-			padding: 2px 2px !important;
-			min-width: 80px;
-			max-width: 100px;
-			word-break: keep-all;
-			white-space: normal;
-		}
-		
-		.score-table {
-			table-layout: fixed;
-			width: 100%;
-			margin: 0;
-		}
-		
-		.score-table th {
-			background-color: #e9ecef;
-			font-size: 0.75rem;
-			padding: 2px 0px !important;
-			text-align: center;
-		}
-		
-		.score-table td:first-child {
-			width: 22px;
-			min-width: 22px;
-			padding: 2px 1px !important;
-			text-align: center;
-			font-size: 0.75rem;
-		}
-		
-		/* 합계 테이블 스타일 수정 */
-		.total-table {
-			table-layout: fixed;
-			width: 100%;
-			margin: 0;
-		}
-		
-		.total-table th,
-		.total-table td {
-			font-size: 0.75rem;
-			padding: 2px 2px !important;
-			text-align: center;
-			word-break: keep-all;
-			white-space: normal;
-		}
-		
-		.total-table .team-members {
-			min-width: 100px;
-			max-width: 140px;
-			text-align: left;
-			padding: 4px 4px !important;
-		}
-		
-		.total-table .score-column {
-			width: 45px;
-			min-width: 45px;
-		}
-		
-		@media (max-width: 576px) {
-			.container {
-				padding-left: 4px;
-				padding-right: 4px;
-			}
-			
-			.score-cell {
-				width: 24px;
-				min-width: 24px;
-				max-width: 24px;
-				font-size: 0.7rem;
-				padding: 1px 0px !important;
-			}
-			
-			.team-members {
-				font-size: 0.7rem;
-				padding: 1px 1px !important;
-				min-width: 70px;
-				line-height: 1.1;
-			}
-		
-			.score-table th {
-				font-size: 0.7rem;
-				padding: 1px 0px !important;
-			}
-			
-			.total-table th,
-			.total-table td {
-				font-size: 0.7rem;
-				padding: 1px 1px !important;
-			}
-			
-			.total-table .score-column {
-				width: 40px;
-				min-width: 40px;
-			}
-		}
+        .score-cell {
+            width: 26px;
+            min-width: 26px;
+            max-width: 26px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f8f9fa;
+            -webkit-tap-highlight-color: transparent;
+            padding: 1px 0px !important;
+            font-size: 0.75rem;
+        }
 
-		.header {
+        .completed-hole {
+            background-color: #ebfaeb !important;
+        }
+
+        .current-hole {
+            background-color: #90EE90 !important;
+        }
+
+        .team-members {
+            font-size: 0.75rem;
+            line-height: 1.2;
+            background-color: #ffffff;
+            padding: 2px 2px !important;
+            min-width: 80px;
+            max-width: 100px;
+            word-break: keep-all;
+            white-space: normal;
+        }
+
+        .score-table {
+            table-layout: fixed;
+            width: 100%;
+            margin: 0;
+        }
+
+        .score-table th {
+            background-color: #e9ecef;
+            font-size: 0.75rem;
+            padding: 2px 0px !important;
+            text-align: center;
+        }
+
+        .score-table td:first-child {
+            width: 22px;
+            min-width: 22px;
+            padding: 2px 1px !important;
+            text-align: center;
+            font-size: 0.75rem;
+        }
+
+        /* 합계 테이블 스타일 */
+        .total-table {
+            table-layout: fixed;
+            width: 100%;
+            margin: 0;
+        }
+
+        .total-table th,
+        .total-table td {
+            font-size: 0.75rem;
+            padding: 2px 2px !important;
+            text-align: center;
+            word-break: keep-all;
+            white-space: normal;
+        }
+
+        .total-table .team-members {
+            min-width: 100px;
+            max-width: 140px;
+            text-align: left;
+            padding: 4px 4px !important;
+        }
+
+        .total-table .score-column {
+            width: 45px;
+            min-width: 45px;
+        }
+
+        .table-responsive {
+            margin-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .table-responsive::-webkit-scrollbar {
+            display: none;
+        }
+
+        .score-cell:active {
+            background-color: #e9ecef;
+        }
+
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .team-members-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .team-member-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 4px;
+        }
+
+        .header {
             background-color: #495057;
             color: white;
             padding: 12px 0;
             margin-bottom: 10px;
         }
+
         .disabled {
             pointer-events: none;
             opacity: 0.6;
         }
-        .table-responsive {
-            margin-bottom: 20px;
-            -webkit-overflow-scrolling: touch;
-        }
+
         #backButton {
             position: absolute;
             left: 15px;
             top: 15px;
         }
+
         .game-info {
             margin-bottom: 15px;
             font-size: 1.1rem;
         }
+
         .date-info {
             margin-bottom: 10px;
             font-size: 1.1rem;
         }
+
         .instruction-text {
             color: #ffc107;
             font-size: 0.9rem;
@@ -159,37 +160,95 @@
             margin-top: 10px;
         }
 
-        /* 모바일 최적화 */
+		/* 모바일 최적화 */
         @media (max-width: 576px) {
+            .container {
+                padding-left: 4px;
+                padding-right: 4px;
+            }
+            
+            .score-cell {
+                width: 24px;
+                min-width: 24px;
+                max-width: 24px;
+                font-size: 0.7rem;
+                padding: 1px 0px !important;
+            }
+            
+            .team-members {
+                font-size: 0.7rem;
+                padding: 1px 1px !important;
+                min-width: 70px;
+                line-height: 1.1;
+            }
+
+            .score-table th {
+                font-size: 0.7rem;
+                padding: 1px 0px !important;
+            }
+            
+            .total-table th,
+            .total-table td {
+                font-size: 0.7rem;
+                padding: 1px 1px !important;
+            }
+            
+            .total-table .score-column {
+                width: 40px;
+                min-width: 40px;
+            }
+
             .header {
                 padding: 8px 0;
                 margin-bottom: 8px;
             }
+
             .header h1 {
                 font-size: 1.25rem;
                 margin-bottom: 8px !important;
             }
+
             .instruction-text {
                 font-size: 0.8rem;
                 margin-top: 6px;
             }
+
             .game-info {
                 margin-bottom: 8px;
                 font-size: 0.95rem;
             }
+
             .date-info {
                 margin-bottom: 6px;
                 font-size: 0.95rem;
             }
+
             .table-responsive {
                 margin-bottom: 10px;
             }
+
             .score-table {
                 margin-bottom: 0;
             }
-            .container {
-                padding-left: 8px;
-                padding-right: 8px;
+        }
+
+        /* 매우 작은 화면 최적화 */
+        @media (max-width: 360px) {
+            .score-cell {
+                width: 22px;
+                min-width: 22px;
+                max-width: 22px;
+                font-size: 0.65rem;
+            }
+            
+            .team-members {
+                min-width: 65px;
+                font-size: 0.65rem;
+            }
+            
+            .total-table .score-column {
+                width: 35px;
+                min-width: 35px;
             }
         }
 
@@ -213,12 +272,14 @@
             padding: 10px;
             display: inline-block;
         }
+
         .score-controls {
             display: flex;
             align-items: center;
             gap: 10px;
             justify-content: center;
         }
+
         .score-button {
             width: 40px;
             height: 40px;
@@ -231,6 +292,7 @@
             justify-content: center;
             cursor: pointer;
         }
+
         .score-button:active {
             background-color: #e9ecef;
         }
@@ -282,17 +344,17 @@
             <table class="table table-bordered score-table">
                 <thead>
                     <tr>
-                        <th>조</th>
-                        <th>팀원</th>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
-                        <th>6</th>
-                        <th>7</th>
-                        <th>8</th>
-                        <th>9</th>
+                        <th style="width: 22px;">조</th>
+                        <th style="min-width: 70px;">팀원</th>
+                        <th style="width: 24px;">1</th>
+                        <th style="width: 24px;">2</th>
+                        <th style="width: 24px;">3</th>
+                        <th style="width: 24px;">4</th>
+                        <th style="width: 24px;">5</th>
+                        <th style="width: 24px;">6</th>
+                        <th style="width: 24px;">7</th>
+                        <th style="width: 24px;">8</th>
+                        <th style="width: 24px;">9</th>
                     </tr>
                 </thead>
                 <tbody id="front9Body">
@@ -304,17 +366,17 @@
             <table class="table table-bordered score-table">
                 <thead>
                     <tr>
-                        <th>조</th>
-                        <th>팀원</th>
-                        <th>10</th>
-                        <th>11</th>
-                        <th>12</th>
-                        <th>13</th>
-                        <th>14</th>
-                        <th>15</th>
-                        <th>16</th>
-                        <th>17</th>
-                        <th>18</th>
+                        <th style="width: 22px;">조</th>
+                        <th style="min-width: 70px;">팀원</th>
+                        <th style="width: 24px;">10</th>
+                        <th style="width: 24px;">11</th>
+                        <th style="width: 24px;">12</th>
+                        <th style="width: 24px;">13</th>
+                        <th style="width: 24px;">14</th>
+                        <th style="width: 24px;">15</th>
+                        <th style="width: 24px;">16</th>
+                        <th style="width: 24px;">17</th>
+                        <th style="width: 24px;">18</th>
                     </tr>
                 </thead>
                 <tbody id="back9Body">
@@ -322,20 +384,22 @@
             </table>
         </div>
 
-		<div class="table-responsive">
-			<table class="table table-bordered total-table">
-				<thead>
-					<tr>
-						<th>조</th>
-						<th>팀원</th>
-						<th class="score-column">경기합계</th>
-						<th class="score-column">팀핸디</th>
-						<th class="score-column">조정합계</th>
-					</tr>
-				</thead>
-				<tbody id="totalBody"></tbody>
-			</table>
-		</div>
+        <div class="table-responsive">
+            <table class="table table-bordered total-table">
+                <thead>
+                    <tr>
+                        <th style="width: 22px;">조</th>
+                        <th style="min-width: 100px;">팀원</th>
+                        <th class="score-column">경기합계</th>
+                        <th class="score-column">팀핸디</th>
+                        <th class="score-column">조정합계</th>
+                    </tr>
+                </thead>
+                <tbody id="totalBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <div class="modal fade" id="scoreModal" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
@@ -362,7 +426,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Firebase 설정
+
+		// Firebase 설정
         const firebaseConfig = {
             apiKey: "AIzaSyCqbwbCQ7CD11oDpvidHI8jsND0R56u4KI",
             authDomain: "golfscoreboard-fe3c2.firebaseapp.com",
@@ -375,11 +440,24 @@
         // Firebase 전역 변수
         let app = null;
         let db = null;
+        let currentUser = null;
+        let currentTeam = null;
+        let isGuest = false;
+        let scoreModal = null;
+        let unsubscribe = null;
+
+        // DOM 엘리먼트
+        const gameDateInput = document.getElementById('gameDate');
+        const playerSelect = document.getElementById('playerSelect');
+        const enterBtn = document.getElementById('enterBtn');
+        const backButton = document.getElementById('backButton');
+        const loginSection = document.getElementById('loginSection');
+        const gameInfo = document.getElementById('gameInfo');
+        const noDataMessage = document.getElementById('noDataMessage');
 
         // Firebase 초기화 함수
         async function initializeFirebase() {
             try {
-                // 이미 초기화되어 있는지 확인
                 if (!firebase.apps.length) {
                     app = firebase.initializeApp(firebaseConfig);
                 } else {
@@ -393,21 +471,6 @@
                 return false;
             }
         }
-        
-        let currentUser = null;
-        let currentTeam = null;
-        let isGuest = false;
-        let scoreModal = null;
-        let unsubscribe = null;
-
-		// DOM 엘리먼트
-        const gameDateInput = document.getElementById('gameDate');
-        const playerSelect = document.getElementById('playerSelect');
-        const enterBtn = document.getElementById('enterBtn');
-        const backButton = document.getElementById('backButton');
-        const loginSection = document.getElementById('loginSection');
-        const gameInfo = document.getElementById('gameInfo');
-        const noDataMessage = document.getElementById('noDataMessage');
 
         // 이벤트 리스너
         document.addEventListener('DOMContentLoaded', function() {
@@ -418,18 +481,26 @@
             const alert = document.createElement('div');
             alert.className = 'alert-overlay';
             alert.style.backgroundColor = isError ? 'rgba(220, 53, 69, 0.9)' : 'rgba(40, 167, 69, 0.9)';
+            alert.style.position = 'fixed';
+            alert.style.top = '20px';
+            alert.style.left = '50%';
+            alert.style.transform = 'translateX(-50%)';
+            alert.style.padding = '10px 20px';
+            alert.style.borderRadius = '5px';
+            alert.style.color = 'white';
+            alert.style.zIndex = '9999';
             alert.textContent = message;
             document.body.appendChild(alert);
 
             setTimeout(() => {
-                alert.classList.add('fade-out');
+                alert.style.opacity = '0';
+                alert.style.transition = 'opacity 0.5s ease';
                 setTimeout(() => alert.remove(), 500);
             }, 2000);
         }
 
         async function initializeApp() {
             try {
-                // Firebase 초기화
                 const isFirebaseInitialized = await initializeFirebase();
                 if (!isFirebaseInitialized) {
                     showAlert('데이터베이스 초기화 실패', true);
@@ -438,7 +509,6 @@
 
                 scoreModal = new bootstrap.Modal(document.getElementById('scoreModal'));
                 
-                // 오늘 날짜 설정
                 const today = new Date();
                 const year = today.getFullYear();
                 const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -455,7 +525,7 @@
             }
         }
 
-		function setupEventListeners() {
+        function setupEventListeners() {
             gameDateInput.addEventListener('change', async () => {
                 try {
                     await loadPlayers(gameDateInput.value);
@@ -469,7 +539,6 @@
             backButton.addEventListener('click', goBack);
             document.getElementById('saveScore').addEventListener('click', saveScore);
             
-            // Score adjustment buttons
             document.getElementById('increaseScore').addEventListener('click', () => {
                 const scoreInput = document.getElementById('scoreInput');
                 const currentValue = parseInt(scoreInput.value) || 0;
@@ -482,7 +551,6 @@
                 scoreInput.value = currentValue - 1;
             });
 
-            // Touch event handlers
             document.addEventListener('touchstart', function(e) {
                 if (e.touches.length > 1) {
                     e.preventDefault();
@@ -498,8 +566,8 @@
                 lastTouchEnd = now;
             }, { passive: false });
         }
-
-        async function loadPlayers(selectedDate) {
+		
+		async function loadPlayers(selectedDate) {
             if (!db) {
                 console.error('Firestore is not initialized');
                 showAlert('데이터베이스 연결 오류', true);
@@ -624,8 +692,8 @@
                 showAlert('게임 입장 중 오류가 발생했습니다.', true);
             }
         }
-
-        function updateScoreboards(docs) {
+		
+		function updateScoreboards(docs) {
             try {
                 const front9Body = document.getElementById('front9Body');
                 const back9Body = document.getElementById('back9Body');
@@ -652,15 +720,15 @@
                     if (front9Row) front9Body.appendChild(front9Row);
                     if (back9Row) back9Body.appendChild(back9Row);
 
-					const totalRow = document.createElement('tr');
-					totalRow.innerHTML = `
-						<td>${data.teamNumber}</td>
-						<td class="team-members">${formatTeamMembersFull(data.teamMembers)}</td>
-						<td class="score-column">${calculateTotal(data)}</td>
-						<td class="score-column">${data.teamHandicap || 0}</td>
-						<td class="score-column">${parseInt(calculateTotal(data)) + (parseInt(data.teamHandicap) || 0)}</td>
-					`;
-					totalBody.appendChild(totalRow);
+                    const totalRow = document.createElement('tr');
+                    totalRow.innerHTML = `
+                        <td>${data.teamNumber}</td>
+                        <td class="team-members">${formatTeamMembersFull(data.teamMembers)}</td>
+                        <td class="score-column">${calculateTotal(data)}</td>
+                        <td class="score-column">${data.teamHandicap || 0}</td>
+                        <td class="score-column">${parseInt(calculateTotal(data)) + (parseInt(data.teamHandicap) || 0)}</td>
+                    `;
+                    totalBody.appendChild(totalRow);
                 });
             } catch (error) {
                 console.error("Error updating scoreboards:", error);
@@ -676,6 +744,8 @@
                     <td class="team-members">${formatTeamMembersShort(data.teamMembers)}</td>
                 `;
 
+                const currentHole = parseInt(data.currentHole) || 0;
+
                 for (let i = start; i <= end; i++) {
                     const cell = document.createElement('td');
                     cell.classList.add('score-cell');
@@ -683,11 +753,12 @@
                     const currentScore = data[`hole${i}`];
                     cell.textContent = currentScore !== undefined ? currentScore : '0';
                     
-                    if (data.currentHole) {
-                        if (i < data.currentHole) {
-                            cell.classList.add('completed-hole');
-                        } else if (i === parseInt(data.currentHole)) {
+                    // 홀 색상 표시 로직
+                    if (currentHole > 0) {
+                        if (i === currentHole) {
                             cell.classList.add('current-hole');
+                        } else if (i < currentHole) {
+                            cell.classList.add('completed-hole');
                         }
                     }
 
@@ -713,71 +784,45 @@
             }
         }
 
-		function formatTeamMembers(members, isTotal = false) {
+        // 1-9홀, 10-18홀 테이블용 - 한 줄에 두 명씩 표시
+        function formatTeamMembersShort(members) {
+            if (!members) return '';
+            try {
+                const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
+                const shortNames = memberArray.map(name => {
+                    const nameWithoutHandicap = name.split('(')[0].trim();
+                    return nameWithoutHandicap.charAt(0);
+                });
+                
+                // 두 명씩 그룹화
+                const pairs = [];
+                for (let i = 0; i < shortNames.length; i += 2) {
+                    pairs.push(shortNames.slice(i, i + 2).join(','));
+                }
+                return pairs.join('<br>');
+            } catch (error) {
+                console.error("Error formatting short team members:", error);
+                return '';
+            }
+        }
+
+        // 합계 테이블용 - 한 줄에 두 명씩 전체 이름 표시
+        function formatTeamMembersFull(members) {
             if (!members) return '';
             try {
                 const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
                 
-                if (isTotal) {
-                    // 합계 테이블용 - 전체 이름 표시
-                    if (memberArray.length > 2) {
-                        return memberArray.slice(0, 2).join(', ') + '<br>' + memberArray.slice(2).join(', ');
-                    }
-                    return memberArray.join(', ');
-                } else {
-                    // 1-9홀, 10-18홀 테이블용 - 첫 글자만 표시
-                    const shortNames = memberArray.map(name => name.charAt(0));
-                    if (shortNames.length > 2) {
-                        return shortNames.slice(0, 2).join(', ') + '<br>' + shortNames.slice(2).join(', ');
-                    }
-                    return shortNames.join(', ');
+                // 두 명씩 그룹화
+                const pairs = [];
+                for (let i = 0; i < memberArray.length; i += 2) {
+                    pairs.push(memberArray.slice(i, i + 2).join(', '));
                 }
+                return pairs.join('<br>');
             } catch (error) {
-                console.error("Error formatting team members:", error);
+                console.error("Error formatting full team members:", error);
                 return '';
             }
         }
-		
-
-		function formatTeamMembersShort(members) {
-			if (!members) return '';
-			try {
-				const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
-				const shortNames = memberArray.map(name => {
-					// 괄호가 있는 경우 괄호 앞의 첫 글자만 사용
-					const nameWithoutHandicap = name.split('(')[0].trim();
-					return nameWithoutHandicap.charAt(0);
-				});
-				
-				// 두 명씩 그룹화
-				const pairs = [];
-				for (let i = 0; i < shortNames.length; i += 2) {
-					pairs.push(shortNames.slice(i, i + 2).join(','));
-				}
-				return pairs.join('<br>');
-			} catch (error) {
-				console.error("Error formatting short team members:", error);
-				return '';
-			}
-		}
-		
-		// 합계 테이블용 - 전체 이름 표시
-		function formatTeamMembersFull(members) {
-			if (!members) return '';
-			try {
-				const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
-				
-				// 두 명씩 그룹화
-				const pairs = [];
-				for (let i = 0; i < memberArray.length; i += 2) {
-					pairs.push(memberArray.slice(i, i + 2).join(', '));
-				}
-				return pairs.join('<br>');
-			} catch (error) {
-				console.error("Error formatting full team members:", error);
-				return '';
-			}
-		}
 
         function calculateTotal(data) {
             try {
@@ -800,7 +845,6 @@
                 
                 modalInfo.textContent = `${teamNumber}조 / ${teamMembers} / ${hole}번 홀`;
                 
-                // 현재 점수 가져오기
                 const querySnapshot = await db.collection("golfscoreboard")
                     .where("gameDate", "==", gameDateInput.value)
                     .where("teamNumber", "==", teamNumber)
@@ -818,7 +862,7 @@
 
                 setTimeout(() => {
                     scoreInput.focus();
-                    scoreInput.select(); // 값을 선택 상태로 만들어 바로 새로운 값 입력 가능
+                    scoreInput.select();
                 }, 300);
 
                 scoreInput.onkeypress = function(e) {
