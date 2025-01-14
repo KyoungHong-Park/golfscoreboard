@@ -25,21 +25,23 @@
 		}
 		
 		.team-members {
-			font-size: 0.75rem;
-			line-height: 1.2;
-			background-color: #ffffff;
-			padding: 2px 2px !important;
-			width: 60px;        /* 고정 너비 사용 */
-			min-width: 60px;
-			max-width: 60px;
-			word-break: keep-all;
-			white-space: normal;
-			height: 40px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			text-align: center;  /* 텍스트 중앙 정렬 */
-		}
+            font-size: 0.75rem;
+            line-height: 1.2;
+            background-color: #ffffff;
+            padding: 2px 2px !important;
+            width: 60px;
+            min-width: 60px;
+            max-width: 60px;
+            word-break: keep-all;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
 		
 		.score-cell {
 			width: 30px;
@@ -757,29 +759,20 @@
 
 		// 1-9홀, 10-18홀 테이블용 - 첫 글자만 표시하고 한 줄에 두 명씩
 		function formatTeamMembersShort(members) {
-			if (!members) return '';
-			try {
-				const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
-				const shortNames = memberArray.map(name => {
-					const nameWithoutHandicap = name.split('(')[0].trim();
-					return nameWithoutHandicap.charAt(0);
-				});
-				
-				// 두 명씩 그룹화하고 쉼표로 구분
-				const result = [];
-				for (let i = 0; i < shortNames.length; i += 2) {
-					if (i + 1 < shortNames.length) {
-						result.push(`${shortNames[i]},${shortNames[i + 1]}`);
-					} else {
-						result.push(shortNames[i]);
-					}
-				}
-				return result.join('<br>');
-			} catch (error) {
-				console.error("Error formatting short team members:", error);
-				return '';
-			}
+		if (!members) return '';
+		try {
+			const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
+			const shortNames = memberArray.map(name => {
+				const nameWithoutHandicap = name.split('(')[0].trim();
+				return nameWithoutHandicap.charAt(0);
+			});
+			
+			return shortNames.join(',');
+		} catch (error) {
+			console.error("Error formatting short team members:", error);
+			return '';
 		}
+	}
 		
 		// 합계 테이블용 - 전체 이름 표시하고 한 줄에 두 명씩
 		function formatTeamMembersFull(members) {
