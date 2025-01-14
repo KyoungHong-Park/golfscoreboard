@@ -14,8 +14,35 @@
             -webkit-text-size-adjust: 100%;
         }
 
+		.score-table th {
+			background-color: #e9ecef;
+			font-size: 0.75rem;
+			padding: 4px 1px !important;
+			text-align: center;
+			height: 30px;
+			vertical-align: middle;
+			white-space: nowrap;  /* 헤더 텍스트 줄바꿈 방지 */
+		}
+		
+		.team-members {
+			font-size: 0.75rem;
+			line-height: 1.2;
+			background-color: #ffffff;
+			padding: 2px 2px !important;
+			width: 60px;        /* 고정 너비 사용 */
+			min-width: 60px;
+			max-width: 60px;
+			word-break: keep-all;
+			white-space: normal;
+			height: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;  /* 텍스트 중앙 정렬 */
+		}
+		
 		.score-cell {
-			width: 30px;          /* 26px에서 30px로 증가 */
+			width: 30px;
 			min-width: 30px;
 			max-width: 30px;
 			text-align: center;
@@ -36,36 +63,11 @@
             background-color: #90EE90 !important;
         }
 
-		.team-members {
-			font-size: 0.75rem;
-			line-height: 1.2;
-			background-color: #ffffff;
-			padding: 2px 2px !important;
-			min-width: 60px;      /* 48px에서 60px로 수정 */
-			max-width: 60px;      /* 60px로 고정 */
-			word-break: keep-all;
-			white-space: normal;
-			height: 40px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-
         .score-table {
             table-layout: fixed;
             width: 100%;
             margin: 0;
         }
-
-		/* 스코어 테이블 헤더 높이 조정 */
-		.score-table th {
-			background-color: #e9ecef;
-			font-size: 0.75rem;
-			padding: 4px 1px !important;
-			text-align: center;
-			height: 30px;    /* 헤더 높이 조정 */
-			vertical-align: middle;
-		}
 
         .score-table td:first-child {
             width: 22px;
@@ -92,17 +94,23 @@
         }
 
 		.total-table .team-members {
-			min-width: 100px;    /* 합계 테이블의 팀원 칸 크기 조정 */
+			width: 100px;
+			min-width: 100px;
 			max-width: 100px;
+			height: auto;
+			min-height: 40px;
 			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			padding: 4px 4px !important;
-			height: auto;        /* 높이 자동 조정 */
 		}
-
-        .total-table .score-column {
-            width: 45px;
-            min-width: 45px;
-        }
+		
+		.total-table .score-column {
+			width: 45px;
+			min-width: 45px;
+			text-align: center;
+		}
 
         .table-responsive {
             margin-bottom: 10px;
@@ -173,19 +181,21 @@
 		/* 모바일 최적화 */
 		@media (max-width: 576px) {
 			.score-cell {
-				width: 28px;     /* 모바일에서도 여유 있는 크기 유지 */
+				width: 28px;
 				min-width: 28px;
 				max-width: 28px;
 				font-size: 0.7rem;
 			}
 			
 			.team-members {
+				width: 55px;
 				min-width: 55px;
 				max-width: 55px;
 				font-size: 0.7rem;
 			}
 			
 			.total-table .team-members {
+				width: 90px;
 				min-width: 90px;
 				max-width: 90px;
 			}
@@ -200,12 +210,14 @@
 			}
 			
 			.team-members {
+				width: 50px;
 				min-width: 50px;
 				max-width: 50px;
 				font-size: 0.65rem;
 			}
 			
 			.total-table .team-members {
+				width: 80px;
 				min-width: 80px;
 				max-width: 80px;
 			}
@@ -743,45 +755,51 @@
             }
         }
 
-        // 1-9홀, 10-18홀 테이블용 - 한 줄에 두 명씩 표시
-        function formatTeamMembersShort(members) {
-            if (!members) return '';
-            try {
-                const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
-                const shortNames = memberArray.map(name => {
-                    const nameWithoutHandicap = name.split('(')[0].trim();
-                    return nameWithoutHandicap.charAt(0);
-                });
-                
-                // 두 명씩 그룹화
-                const pairs = [];
-                for (let i = 0; i < shortNames.length; i += 2) {
-                    pairs.push(shortNames.slice(i, i + 2).join(','));
-                }
-                return pairs.join('<br>');
-            } catch (error) {
-                console.error("Error formatting short team members:", error);
-                return '';
-            }
-        }
-
-        // 합계 테이블용 - 한 줄에 두 명씩 전체 이름 표시
-        function formatTeamMembersFull(members) {
-            if (!members) return '';
-            try {
-                const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
-                
-                // 두 명씩 그룹화
-                const pairs = [];
-                for (let i = 0; i < memberArray.length; i += 2) {
-                    pairs.push(memberArray.slice(i, i + 2).join(', '));
-                }
-                return pairs.join('<br>');
-            } catch (error) {
-                console.error("Error formatting full team members:", error);
-                return '';
-            }
-        }
+		// 1-9홀, 10-18홀 테이블용 - 첫 글자만 표시하고 한 줄에 두 명씩
+		function formatTeamMembersShort(members) {
+			if (!members) return '';
+			try {
+				const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
+				const shortNames = memberArray.map(name => {
+					const nameWithoutHandicap = name.split('(')[0].trim();
+					return nameWithoutHandicap.charAt(0);
+				});
+				
+				// 두 명씩 그룹화하고 쉼표로 구분
+				const result = [];
+				for (let i = 0; i < shortNames.length; i += 2) {
+					if (i + 1 < shortNames.length) {
+						result.push(`${shortNames[i]},${shortNames[i + 1]}`);
+					} else {
+						result.push(shortNames[i]);
+					}
+				}
+				return result.join('<br>');
+			} catch (error) {
+				console.error("Error formatting short team members:", error);
+				return '';
+			}
+		}
+		
+		// 합계 테이블용 - 전체 이름 표시하고 한 줄에 두 명씩
+		function formatTeamMembersFull(members) {
+			if (!members) return '';
+			try {
+				const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
+				const result = [];
+				for (let i = 0; i < memberArray.length; i += 2) {
+					if (i + 1 < memberArray.length) {
+						result.push(`${memberArray[i]}, ${memberArray[i + 1]}`);
+					} else {
+						result.push(memberArray[i]);
+					}
+				}
+				return result.join('<br>');
+			} catch (error) {
+				console.error("Error formatting full team members:", error);
+				return '';
+			}
+		}
 
         function calculateTotal(data) {
             try {
