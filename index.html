@@ -13,49 +13,104 @@
             color: #212529;
             -webkit-text-size-adjust: 100%;
         }
+
         .score-cell {
-            width: 32px;
-            min-width: 32px;
-            max-width: 32px;
-            text-align: center;
-            cursor: pointer;
-            background-color: #f8f9fa;
-            -webkit-tap-highlight-color: transparent;
-            padding: 4px 2px !important;
-            font-size: 0.9rem;
-        }
+		width: 28px;
+		min-width: 28px;
+		max-width: 28px;
+		text-align: center;
+		cursor: pointer;
+		background-color: #f8f9fa;
+		-webkit-tap-highlight-color: transparent;
+		padding: 2px 1px !important;
+		font-size: 0.8rem;
+		}
+
         .completed-hole {
             background-color: #ebfaeb !important;
         }
+
         .current-hole {
             background-color: #fff3bf !important;
         }
-        .team-members {
-            font-size: 0.85rem;
-            line-height: 1.2;
-            background-color: #ffffff;
-            padding: 4px 6px !important;
-            min-width: 70px;
-        }
-        .score-table {
-            table-layout: fixed;
-            width: 100%;
-            margin: 0;
-        }
-        .score-table th {
-            background-color: #e9ecef;
-            font-size: 0.85rem;
-            padding: 6px 2px !important;
-            text-align: center;
-        }
-        .score-table td:first-child {
-            width: 30px;
-            min-width: 30px;
-            padding: 4px 2px !important;
-            text-align: center;
-            font-size: 0.85rem;
-        }
-        .header {
+
+		.team-members {
+			font-size: 0.8rem;
+			line-height: 1.2;
+			background-color: #ffffff;
+			padding: 4px 4px !important;
+			min-width: 60px;
+			max-width: 70px;
+		}
+
+		.score-table {
+			table-layout: fixed;
+			width: 100%;
+			margin: 0;
+		}
+
+		.score-table th {
+			background-color: #e9ecef;
+			font-size: 0.8rem;
+			padding: 4px 1px !important;
+			text-align: center;
+		}
+
+		.score-table td:first-child {
+			width: 25px;
+			min-width: 25px;
+			padding: 4px 1px !important;
+			text-align: center;
+			font-size: 0.8rem;
+		}
+
+		/* 합계 테이블 스타일 추가 */
+		.total-table {
+			table-layout: fixed;
+			width: 100%;
+			margin: 0;
+		}
+		
+		.total-table th,
+		.total-table td {
+			font-size: 0.8rem;
+			padding: 4px 4px !important;
+			text-align: center;
+		}
+		
+		.total-table .score-column {
+			width: 50px;
+			min-width: 50px;
+		}
+		
+		@media (max-width: 576px) {
+			.score-cell {
+				width: 26px;
+				min-width: 26px;
+				max-width: 26px;
+				font-size: 0.75rem;
+				padding: 2px 0px !important;
+			}
+			
+			.team-members {
+				font-size: 0.75rem;
+				padding: 2px 2px !important;
+				min-width: 55px;
+			}
+		
+			.score-table th {
+				font-size: 0.75rem;
+				padding: 2px 0px !important;
+			}
+			
+			.total-table th,
+			.total-table td {
+				font-size: 0.75rem;
+				padding: 2px 2px !important;
+			}
+		}
+
+		.header {
             background-color: #495057;
             color: white;
             padding: 12px 0;
@@ -252,20 +307,20 @@
             </table>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-bordered score-table">
-                <thead>
-                    <tr>
-                        <th>조</th>
-                        <th>팀원</th>
-                        <th>합계</th>
-                    </tr>
-                </thead>
-                <tbody id="totalBody">
-                </tbody>
-            </table>
-        </div>
-    </div>
+		<div class="table-responsive">
+			<table class="table table-bordered total-table">
+				<thead>
+					<tr>
+						<th>조</th>
+						<th>팀원</th>
+						<th class="score-column">경기합계</th>
+						<th class="score-column">팀핸디</th>
+						<th class="score-column">조정합계</th>
+					</tr>
+				</thead>
+				<tbody id="totalBody"></tbody>
+			</table>
+		</div>
 
     <div class="modal fade" id="scoreModal" tabindex="-1" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
@@ -582,13 +637,15 @@
                     if (front9Row) front9Body.appendChild(front9Row);
                     if (back9Row) back9Body.appendChild(back9Row);
 
-                    const totalRow = document.createElement('tr');
-                    totalRow.innerHTML = `
-                        <td>${data.teamNumber}</td>
-                        <td class="team-members">${formatTeamMembersFull(data.teamMembers)}</td>
-                        <td>${calculateTotal(data)}</td>
-                    `;
-                    totalBody.appendChild(totalRow);
+					const totalRow = document.createElement('tr');
+					totalRow.innerHTML = `
+						<td>${data.teamNumber}</td>
+						<td class="team-members">${formatTeamMembersFull(data.teamMembers)}</td>
+						<td class="score-column">${calculateTotal(data)}</td>
+						<td class="score-column">${data.teamHandicap || 0}</td>
+						<td class="score-column">${parseInt(calculateTotal(data)) + (parseInt(data.teamHandicap) || 0)}</td>
+					`;
+					totalBody.appendChild(totalRow);
                 });
             } catch (error) {
                 console.error("Error updating scoreboards:", error);
