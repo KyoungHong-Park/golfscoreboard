@@ -14,17 +14,19 @@
             -webkit-text-size-adjust: 100%;
         }
 
-        .score-cell {
-            width: 26px;
-            min-width: 26px;
-            max-width: 26px;
-            text-align: center;
-            cursor: pointer;
-            background-color: #f8f9fa;
-            -webkit-tap-highlight-color: transparent;
-            padding: 1px 0px !important;
-            font-size: 0.75rem;
-        }
+		.score-cell {
+			width: 26px;
+			min-width: 26px;
+			max-width: 26px;
+			text-align: center;
+			cursor: pointer;
+			background-color: #f8f9fa;
+			-webkit-tap-highlight-color: transparent;
+			padding: 2px 0px !important;
+			font-size: 0.75rem;
+			height: 40px;    /* team-members와 동일한 높이 */
+			line-height: 40px; /* 세로 중앙 정렬 */
+		}
 
         .completed-hole {
             background-color: #ebfaeb !important;
@@ -34,16 +36,20 @@
             background-color: #90EE90 !important;
         }
 
-        .team-members {
-            font-size: 0.75rem;
-            line-height: 1.2;
-            background-color: #ffffff;
-            padding: 2px 2px !important;
-            min-width: 80px;
-            max-width: 100px;
-            word-break: keep-all;
-            white-space: normal;
-        }
+		.team-members {
+			font-size: 0.75rem;
+			line-height: 1.2;
+			background-color: #ffffff;
+			padding: 2px 2px !important;
+			min-width: 48px;  /* 기존 80px에서 48px로 축소 */
+			max-width: 60px;  /* 기존 100px에서 60px로 축소 */
+			word-break: keep-all;
+			white-space: normal;
+			height: 40px;    /* 최소 2줄 높이 보장 */
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 
         .score-table {
             table-layout: fixed;
@@ -51,12 +57,15 @@
             margin: 0;
         }
 
-        .score-table th {
-            background-color: #e9ecef;
-            font-size: 0.75rem;
-            padding: 2px 0px !important;
-            text-align: center;
-        }
+		/* 스코어 테이블 헤더 높이 조정 */
+		.score-table th {
+			background-color: #e9ecef;
+			font-size: 0.75rem;
+			padding: 4px 1px !important;
+			text-align: center;
+			height: 30px;    /* 헤더 높이 조정 */
+			vertical-align: middle;
+		}
 
         .score-table td:first-child {
             width: 22px;
@@ -82,12 +91,13 @@
             white-space: normal;
         }
 
-        .total-table .team-members {
-            min-width: 100px;
-            max-width: 140px;
-            text-align: left;
-            padding: 4px 4px !important;
-        }
+		/* 합계 테이블 스타일 수정 */
+		.total-table .team-members {
+			min-width: 60px;   /* 기존 100px에서 60px로 축소 */
+			max-width: 84px;   /* 기존 140px에서 84px로 축소 */
+			text-align: left;
+			padding: 4px 4px !important;
+		}
 
         .total-table .score-column {
             width: 45px;
@@ -161,96 +171,47 @@
         }
 
 		/* 모바일 최적화 */
-        @media (max-width: 576px) {
-            .container {
-                padding-left: 4px;
-                padding-right: 4px;
-            }
-            
-            .score-cell {
-                width: 24px;
-                min-width: 24px;
-                max-width: 24px;
-                font-size: 0.7rem;
-                padding: 1px 0px !important;
-            }
-            
-            .team-members {
-                font-size: 0.7rem;
-                padding: 1px 1px !important;
-                min-width: 70px;
-                line-height: 1.1;
-            }
-
-            .score-table th {
-                font-size: 0.7rem;
-                padding: 1px 0px !important;
-            }
-            
-            .total-table th,
-            .total-table td {
-                font-size: 0.7rem;
-                padding: 1px 1px !important;
-            }
-            
-            .total-table .score-column {
-                width: 40px;
-                min-width: 40px;
-            }
-
-            .header {
-                padding: 8px 0;
-                margin-bottom: 8px;
-            }
-
-            .header h1 {
-                font-size: 1.25rem;
-                margin-bottom: 8px !important;
-            }
-
-            .instruction-text {
-                font-size: 0.8rem;
-                margin-top: 6px;
-            }
-
-            .game-info {
-                margin-bottom: 8px;
-                font-size: 0.95rem;
-            }
-
-            .date-info {
-                margin-bottom: 6px;
-                font-size: 0.95rem;
-            }
-
-            .table-responsive {
-                margin-bottom: 10px;
-            }
-
-            .score-table {
-                margin-bottom: 0;
-            }
-        }
-
-        /* 매우 작은 화면 최적화 */
-        @media (max-width: 360px) {
-            .score-cell {
-                width: 22px;
-                min-width: 22px;
-                max-width: 22px;
-                font-size: 0.65rem;
-            }
-            
-            .team-members {
-                min-width: 65px;
-                font-size: 0.65rem;
-            }
-            
-            .total-table .score-column {
-                width: 35px;
-                min-width: 35px;
-            }
-        }
+		@media (max-width: 576px) {
+			.team-members {
+				min-width: 42px;  /* 더 작은 화면에서는 더 축소 */
+				max-width: 54px;
+				font-size: 0.7rem;
+				padding: 1px 1px !important;
+				height: 36px;    /* 모바일에서 약간 더 작게 */
+			}
+		
+			.score-cell {
+				height: 36px;    /* team-members와 동일한 높이 */
+				line-height: 36px;
+				font-size: 0.7rem;
+			}
+		
+			.total-table .team-members {
+				min-width: 54px;
+				max-width: 72px;
+			}
+		}
+		
+		/* 매우 작은 화면 최적화 */
+		@media (max-width: 360px) {
+			.team-members {
+				min-width: 36px;
+				max-width: 48px;
+				font-size: 0.65rem;
+				height: 32px;
+			}
+		
+			.score-cell {
+				height: 32px;
+				line-height: 32px;
+				font-size: 0.65rem;
+			}
+		
+			.total-table .team-members {
+				min-width: 48px;
+				max-width: 60px;
+			}
+		}
 
         /* 입력 필드 스타일링 */
         input[type="date"],
