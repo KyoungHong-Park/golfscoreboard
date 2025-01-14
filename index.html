@@ -15,17 +15,17 @@
         }
 
 		.score-cell {
-			width: 26px;
-			min-width: 26px;
-			max-width: 26px;
+			width: 30px;          /* 26px에서 30px로 증가 */
+			min-width: 30px;
+			max-width: 30px;
 			text-align: center;
 			cursor: pointer;
 			background-color: #f8f9fa;
 			-webkit-tap-highlight-color: transparent;
 			padding: 2px 0px !important;
 			font-size: 0.75rem;
-			height: 40px;    /* team-members와 동일한 높이 */
-			line-height: 40px; /* 세로 중앙 정렬 */
+			height: 40px;
+			line-height: 40px;
 		}
 
         .completed-hole {
@@ -41,11 +41,11 @@
 			line-height: 1.2;
 			background-color: #ffffff;
 			padding: 2px 2px !important;
-			min-width: 48px;  /* 기존 80px에서 48px로 축소 */
-			max-width: 60px;  /* 기존 100px에서 60px로 축소 */
+			min-width: 60px;      /* 48px에서 60px로 수정 */
+			max-width: 60px;      /* 60px로 고정 */
 			word-break: keep-all;
 			white-space: normal;
-			height: 40px;    /* 최소 2줄 높이 보장 */
+			height: 40px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -91,12 +91,12 @@
             white-space: normal;
         }
 
-		/* 합계 테이블 스타일 수정 */
 		.total-table .team-members {
-			min-width: 60px;   /* 기존 100px에서 60px로 축소 */
-			max-width: 84px;   /* 기존 140px에서 84px로 축소 */
-			text-align: left;
+			min-width: 100px;    /* 합계 테이블의 팀원 칸 크기 조정 */
+			max-width: 100px;
+			text-align: center;
 			padding: 4px 4px !important;
+			height: auto;        /* 높이 자동 조정 */
 		}
 
         .total-table .score-column {
@@ -172,44 +172,42 @@
 
 		/* 모바일 최적화 */
 		@media (max-width: 576px) {
-			.team-members {
-				min-width: 42px;  /* 더 작은 화면에서는 더 축소 */
-				max-width: 54px;
-				font-size: 0.7rem;
-				padding: 1px 1px !important;
-				height: 36px;    /* 모바일에서 약간 더 작게 */
-			}
-		
 			.score-cell {
-				height: 36px;    /* team-members와 동일한 높이 */
-				line-height: 36px;
+				width: 28px;     /* 모바일에서도 여유 있는 크기 유지 */
+				min-width: 28px;
+				max-width: 28px;
 				font-size: 0.7rem;
 			}
-		
+			
+			.team-members {
+				min-width: 55px;
+				max-width: 55px;
+				font-size: 0.7rem;
+			}
+			
 			.total-table .team-members {
-				min-width: 54px;
-				max-width: 72px;
+				min-width: 90px;
+				max-width: 90px;
 			}
 		}
 		
-		/* 매우 작은 화면 최적화 */
 		@media (max-width: 360px) {
-			.team-members {
-				min-width: 36px;
-				max-width: 48px;
-				font-size: 0.65rem;
-				height: 32px;
-			}
-		
 			.score-cell {
-				height: 32px;
-				line-height: 32px;
+				width: 26px;
+				min-width: 26px;
+				max-width: 26px;
 				font-size: 0.65rem;
 			}
-		
+			
+			.team-members {
+				min-width: 50px;
+				max-width: 50px;
+				font-size: 0.65rem;
+			}
+			
 			.total-table .team-members {
-				min-width: 48px;
-				max-width: 60px;
+				min-width: 80px;
+				max-width: 80px;
 			}
 		}
 
@@ -306,16 +304,16 @@
                 <thead>
                     <tr>
                         <th style="width: 22px;">조</th>
-                        <th style="min-width: 70px;">팀원</th>
-                        <th style="width: 24px;">1</th>
-                        <th style="width: 24px;">2</th>
-                        <th style="width: 24px;">3</th>
-                        <th style="width: 24px;">4</th>
-                        <th style="width: 24px;">5</th>
-                        <th style="width: 24px;">6</th>
-                        <th style="width: 24px;">7</th>
-                        <th style="width: 24px;">8</th>
-                        <th style="width: 24px;">9</th>
+                        <th style="min-width: 60px;">팀원</th>
+                        <th style="width: 30px;">1</th>
+                        <th style="width: 30px;">2</th>
+                        <th style="width: 30px;">3</th>
+                        <th style="width: 30px;">4</th>
+                        <th style="width: 30px;">5</th>
+                        <th style="width: 30px;">6</th>
+                        <th style="width: 30px;">7</th>
+                        <th style="width: 30px;">8</th>
+                        <th style="width: 30px;">9</th>
                     </tr>
                 </thead>
                 <tbody id="front9Body">
@@ -328,16 +326,16 @@
                 <thead>
                     <tr>
                         <th style="width: 22px;">조</th>
-                        <th style="min-width: 70px;">팀원</th>
-                        <th style="width: 24px;">10</th>
-                        <th style="width: 24px;">11</th>
-                        <th style="width: 24px;">12</th>
-                        <th style="width: 24px;">13</th>
-                        <th style="width: 24px;">14</th>
-                        <th style="width: 24px;">15</th>
-                        <th style="width: 24px;">16</th>
-                        <th style="width: 24px;">17</th>
-                        <th style="width: 24px;">18</th>
+                        <th style="min-width: 60px;">팀원</th>
+                        <th style="width: 30px;">10</th>
+                        <th style="width: 30px;">11</th>
+                        <th style="width: 30px;">12</th>
+                        <th style="width: 30px;">13</th>
+                        <th style="width: 30px;">14</th>
+                        <th style="width: 30px;">15</th>
+                        <th style="width: 30px;">16</th>
+                        <th style="width: 30px;">17</th>
+                        <th style="width: 30px;">18</th>
                     </tr>
                 </thead>
                 <tbody id="back9Body">
@@ -350,7 +348,7 @@
                 <thead>
                     <tr>
                         <th style="width: 22px;">조</th>
-                        <th style="min-width: 100px;">팀원</th>
+                        <th style="width: 100px;">팀원</th>
                         <th class="score-column">경기합계</th>
                         <th class="score-column">팀핸디</th>
                         <th class="score-column">조정합계</th>
