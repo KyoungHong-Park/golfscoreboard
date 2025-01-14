@@ -14,57 +14,52 @@
             -webkit-text-size-adjust: 100%;
         }
 
-        .score-cell {
-		width: 28px;
-		min-width: 28px;
-		max-width: 28px;
-		text-align: center;
-		cursor: pointer;
-		background-color: #f8f9fa;
-		-webkit-tap-highlight-color: transparent;
-		padding: 2px 1px !important;
-		font-size: 0.8rem;
+		/* 기존 스타일을 다음과 같이 수정/추가합니다 */
+		.score-cell {
+			width: 26px;
+			min-width: 26px;
+			max-width: 26px;
+			text-align: center;
+			cursor: pointer;
+			background-color: #f8f9fa;
+			-webkit-tap-highlight-color: transparent;
+			padding: 1px 0px !important;
+			font-size: 0.75rem;
 		}
-
-        .completed-hole {
-            background-color: #ebfaeb !important;
-        }
-
-        .current-hole {
-            background-color: #fff3bf !important;
-        }
-
+		
 		.team-members {
-			font-size: 0.8rem;
+			font-size: 0.75rem;
 			line-height: 1.2;
 			background-color: #ffffff;
-			padding: 4px 4px !important;
-			min-width: 60px;
-			max-width: 70px;
+			padding: 2px 2px !important;
+			min-width: 80px;
+			max-width: 100px;
+			word-break: keep-all;
+			white-space: normal;
 		}
-
+		
 		.score-table {
 			table-layout: fixed;
 			width: 100%;
 			margin: 0;
 		}
-
+		
 		.score-table th {
 			background-color: #e9ecef;
-			font-size: 0.8rem;
-			padding: 4px 1px !important;
+			font-size: 0.75rem;
+			padding: 2px 0px !important;
 			text-align: center;
 		}
-
+		
 		.score-table td:first-child {
-			width: 25px;
-			min-width: 25px;
-			padding: 4px 1px !important;
+			width: 22px;
+			min-width: 22px;
+			padding: 2px 1px !important;
 			text-align: center;
-			font-size: 0.8rem;
+			font-size: 0.75rem;
 		}
-
-		/* 합계 테이블 스타일 추가 */
+		
+		/* 합계 테이블 스타일 수정 */
 		.total-table {
 			table-layout: fixed;
 			width: 100%;
@@ -73,40 +68,60 @@
 		
 		.total-table th,
 		.total-table td {
-			font-size: 0.8rem;
-			padding: 4px 4px !important;
+			font-size: 0.75rem;
+			padding: 2px 2px !important;
 			text-align: center;
+			word-break: keep-all;
+			white-space: normal;
+		}
+		
+		.total-table .team-members {
+			min-width: 100px;
+			max-width: 140px;
+			text-align: left;
+			padding: 4px 4px !important;
 		}
 		
 		.total-table .score-column {
-			width: 50px;
-			min-width: 50px;
+			width: 45px;
+			min-width: 45px;
 		}
 		
 		@media (max-width: 576px) {
+			.container {
+				padding-left: 4px;
+				padding-right: 4px;
+			}
+			
 			.score-cell {
-				width: 26px;
-				min-width: 26px;
-				max-width: 26px;
-				font-size: 0.75rem;
-				padding: 2px 0px !important;
+				width: 24px;
+				min-width: 24px;
+				max-width: 24px;
+				font-size: 0.7rem;
+				padding: 1px 0px !important;
 			}
 			
 			.team-members {
-				font-size: 0.75rem;
-				padding: 2px 2px !important;
-				min-width: 55px;
+				font-size: 0.7rem;
+				padding: 1px 1px !important;
+				min-width: 70px;
+				line-height: 1.1;
 			}
 		
 			.score-table th {
-				font-size: 0.75rem;
-				padding: 2px 0px !important;
+				font-size: 0.7rem;
+				padding: 1px 0px !important;
 			}
 			
 			.total-table th,
 			.total-table td {
-				font-size: 0.75rem;
-				padding: 2px 2px !important;
+				font-size: 0.7rem;
+				padding: 1px 1px !important;
+			}
+			
+			.total-table .score-column {
+				width: 40px;
+				min-width: 40px;
 			}
 		}
 
@@ -724,36 +739,45 @@
         }
 		
 
-		// 1-9홀, 10-18홀 테이블용 - 첫 글자만 표시
-        function formatTeamMembersShort(members) {
-            if (!members) return '';
-            try {
-                const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
-                const shortNames = memberArray.map(name => name.charAt(0));
-                if (shortNames.length > 2) {
-                    return shortNames.slice(0, 2).join(', ') + '<br>' + shortNames.slice(2).join(', ');
-                }
-                return shortNames.join(', ');
-            } catch (error) {
-                console.error("Error formatting short team members:", error);
-                return '';
-            }
-        }
-
-        // 합계 테이블용 - 전체 이름 표시
-        function formatTeamMembersFull(members) {
-            if (!members) return '';
-            try {
-                const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
-                if (memberArray.length > 2) {
-                    return memberArray.slice(0, 2).join(', ') + '<br>' + memberArray.slice(2).join(', ');
-                }
-                return memberArray.join(', ');
-            } catch (error) {
-                console.error("Error formatting full team members:", error);
-                return '';
-            }
-        }
+		function formatTeamMembersShort(members) {
+			if (!members) return '';
+			try {
+				const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
+				const shortNames = memberArray.map(name => {
+					// 괄호가 있는 경우 괄호 앞의 첫 글자만 사용
+					const nameWithoutHandicap = name.split('(')[0].trim();
+					return nameWithoutHandicap.charAt(0);
+				});
+				
+				// 두 명씩 그룹화
+				const pairs = [];
+				for (let i = 0; i < shortNames.length; i += 2) {
+					pairs.push(shortNames.slice(i, i + 2).join(','));
+				}
+				return pairs.join('<br>');
+			} catch (error) {
+				console.error("Error formatting short team members:", error);
+				return '';
+			}
+		}
+		
+		// 합계 테이블용 - 전체 이름 표시
+		function formatTeamMembersFull(members) {
+			if (!members) return '';
+			try {
+				const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
+				
+				// 두 명씩 그룹화
+				const pairs = [];
+				for (let i = 0; i < memberArray.length; i += 2) {
+					pairs.push(memberArray.slice(i, i + 2).join(', '));
+				}
+				return pairs.join('<br>');
+			} catch (error) {
+				console.error("Error formatting full team members:", error);
+				return '';
+			}
+		}
 
         function calculateTotal(data) {
             try {
