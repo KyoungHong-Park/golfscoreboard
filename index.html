@@ -784,9 +784,12 @@
 				const rows = [];
 				for (let i = 0; i < memberArray.length; i += 2) {
 					const first = memberArray[i].split('(')[0].trim().charAt(0);
-					const second = i + 1 < memberArray.length ? 
-						memberArray[i + 1].split('(')[0].trim().charAt(0) : '';
-					rows.push(second ? `${first} ${second}` : first);
+					if (i + 1 < memberArray.length) {
+						const second = memberArray[i + 1].split('(')[0].trim().charAt(0);
+						rows.push(`${first}, ${second}`);
+					} else {
+						rows.push(first);
+					}
 				}
 				return rows.join('<br>');
 			} catch (error) {
