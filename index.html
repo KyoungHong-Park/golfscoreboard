@@ -777,25 +777,27 @@
 			}
 		}
 		
-		function formatTeamMembersShort(members) {
-			if (!members) return '';
-			try {
-				const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
-				const rows = [];
-				for (let i = 0; i < memberArray.length; i += 2) {
-					const first = memberArray[i].split('(')[0].trim().charAt(0);
-					if (i + 1 < memberArray.length) {
-						const second = memberArray[i + 1].split('(')[0].trim().charAt(0);
-						rows.push(`${first}, ${second}`);
-					} else {
-						rows.push(first);
-					}
-				}
-				return rows.join('<br>');
-			} catch (error) {
-				console.error("Error formatting short team members:", error);
-				return '';
-			}
+    		function formatTeamMembersShort(members) {
+    			if (!members) return '';
+    			try {
+        			const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
+        			const rows = [];
+      				  for (let i = 0; i < memberArray.length; i += 2) {
+       				     // 첫번째 멤버의 첫 두글자 가져오기
+      				      const first = memberArray[i].split('(')[0].trim().substring(0, 2);
+         				   if (i + 1 < memberArray.length) {
+        				        // 두번째 멤버의 첫 두글자 가져오기
+          				      const second = memberArray[i + 1].split('(')[0].trim().substring(0, 2);
+          				      rows.push(`${first}, ${second}`);
+        				    } else {
+       					         rows.push(first);
+  					    }
+  				    }
+				    return rows.join('<br>');
+			    } catch (error) {
+  			      console.error("Error formatting short team members:", error);
+ 			       return '';
+			    }
 		}
 		
 		function formatTeamMembersFull(members) {
