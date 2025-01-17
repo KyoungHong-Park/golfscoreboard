@@ -183,7 +183,14 @@
 		    backface-visibility: hidden;
 		}
 		
+		.modal-backdrop {
+		    animation: none !important;
+		    transition: none !important;
+		    opacity: 0.5 !important;
+		}
+		
 		.modal-content {
+		    animation: none !important;
 		    -webkit-backface-visibility: hidden;
 		    backface-visibility: hidden;
 		    -webkit-transform: translate3d(0, 0, 0);
@@ -191,8 +198,11 @@
 		    perspective: 1000;
 		    -webkit-perspective: 1000;
 		    -webkit-font-smoothing: antialiased;
-		    opacity: 1;
-		    transition: opacity 0.15s linear;
+		}
+		
+		.modal.fade .modal-dialog {
+		    transform: none !important;
+		    transition: none !important;
 		}
 	    
 		/* 점수 입력 모달 스타일링 */
