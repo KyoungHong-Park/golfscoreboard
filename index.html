@@ -492,29 +492,33 @@
 		}
 		
 		async function initializeApp() {
-			try {
-				const isFirebaseInitialized = await initializeFirebase();
-				if (!isFirebaseInitialized) {
-					showAlert('데이터베이스 초기화 실패', true);
-					return;
-				}
+		    try {
+		        const isFirebaseInitialized = await initializeFirebase();
+		        if (!isFirebaseInitialized) {
+		            showAlert('데이터베이스 초기화 실패', true);
+		            return;
+		        }
 		
-				scoreModal = new bootstrap.Modal(document.getElementById('scoreModal'));
-				
-				const today = new Date();
-				const year = today.getFullYear();
-				const month = String(today.getMonth() + 1).padStart(2, '0');
-				const day = String(today.getDate()).padStart(2, '0');
-				const todayString = `${year}-${month}-${day}`;
-				
-				gameDateInput.value = todayString;
-				
-				await loadPlayers(todayString);
-				setupEventListeners();
-			} catch (error) {
-				console.error('Error initializing app:', error);
-				showAlert('초기화 중 오류가 발생했습니다.', true);
-			}
+		        scoreModal = new bootstrap.Modal(document.getElementById('scoreModal'), {
+		            backdrop: 'static',
+		            keyboard: false,
+		            focus: true
+		        });
+		        
+		        const today = new Date();
+		        const year = today.getFullYear();
+		        const month = String(today.getMonth() + 1).padStart(2, '0');
+		        const day = String(today.getDate()).padStart(2, '0');
+		        const todayString = `${year}-${month}-${day}`;
+		        
+		        gameDateInput.value = todayString;
+		        
+		        await loadPlayers(todayString);
+		        setupEventListeners();
+		    } catch (error) {
+		        console.error('Error initializing app:', error);
+		        showAlert('초기화 중 오류가 발생했습니다.', true);
+		    }
 		}
 		
 		function setupEventListeners() {
