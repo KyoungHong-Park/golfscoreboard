@@ -835,42 +835,46 @@
 		}
 		
 		async function openScoreModal(teamNumber, teamMembers, hole) {
-			try {
-				const modalInfo = document.getElementById('modalInfo');
-				const scoreInput = document.getElementById('scoreInput');
-				
-				modalInfo.textContent = `${teamNumber}조 / ${teamMembers} / ${hole}번 홀`;
-				
-				const querySnapshot = await db.collection("golfscoreboard")
-					.where("gameDate", "==", gameDateInput.value)
-					.where("teamNumber", "==", teamNumber)
-					.get();
+		    try {
+		        const modalInfo = document.getElementById('modalInfo');
+		        const scoreInput = document.getElementById('scoreInput');
+		        
+		        // 팀원명에서 (핸디) 제거
+		        const cleanTeamMembers = teamMembers.split(',')
+		            .map(member => member.split('(')[0].trim())
+		            .join(', ');
+		        modalInfo.textContent = `${teamNumber}조 / ${cleanTeamMembers} / ${hole}번 홀`;
 		
-				if (!querySnapshot.empty) {
-					const data = querySnapshot.docs[0].data();
-					const currentScore = data[`hole${hole}`];
-					scoreInput.value = currentScore || '0';
-				} else {
-					scoreInput.value = '0';
-				}
-				
-				scoreModal.show();
+		        const querySnapshot = await db.collection("golfscoreboard")
+		            .where("gameDate", "==", gameDateInput.value)
+		            .where("teamNumber", "==", teamNumber)
+		            .get();
 		
-				setTimeout(() => {
-					scoreInput.focus();
-					scoreInput.select();
-				}, 300);
+		        if (!querySnapshot.empty) {
+		            const data = querySnapshot.docs[0].data();
+		            const currentScore = data[`hole${hole}`];
+		            scoreInput.value = currentScore || '0';
+		        } else {
+		            scoreInput.value = '0';
+		        }
+		        
+		        scoreModal.show();
 		
-				scoreInput.onkeypress = function(e) {
-					if (e.key === 'Enter') {
-						e.preventDefault();
-						document.getElementById('saveScore').click();
-					}
-				};
-			} catch (error) {
-				console.error("Error opening score modal:", error);
-				showAlert('점수 조회 중 오류가 발생했습니다.', true);
-			}
+		        setTimeout(() => {
+		            scoreInput.focus();
+		            scoreInput.select();
+		        }, 300);
+		
+		        scoreInput.onkeypress = function(e) {
+		            if (e.key === 'Enter') {
+		                e.preventDefault();
+		                document.getElementById('saveScore').click();
+		            }
+		        };
+		    } catch (error) {
+		        console.error("Error opening score modal:", error);
+		        showAlert('점수 조회 중 오류가 발생했습니다.', true);
+		    }
 		}
 		
 		async function saveScore() {
