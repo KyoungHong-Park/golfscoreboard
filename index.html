@@ -178,12 +178,21 @@
 			margin-top: 10px;
 		}
 	    
+		.modal {
+		    -webkit-backface-visibility: hidden;
+		    backface-visibility: hidden;
+		}
+		
 		.modal-content {
 		    -webkit-backface-visibility: hidden;
 		    backface-visibility: hidden;
-		    -webkit-transform: translateZ(0);
-		    transform: translateZ(0);
-		    /* 기존 스타일은 그대로 유지 */
+		    -webkit-transform: translate3d(0, 0, 0);
+		    transform: translate3d(0, 0, 0);
+		    perspective: 1000;
+		    -webkit-perspective: 1000;
+		    -webkit-font-smoothing: antialiased;
+		    opacity: 1;
+		    transition: opacity 0.15s linear;
 		}
 	    
 		/* 점수 입력 모달 스타일링 */
