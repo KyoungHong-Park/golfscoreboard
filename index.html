@@ -509,11 +509,19 @@
 		            return;
 		        }
 		
-		        scoreModal = new bootstrap.Modal(document.getElementById('scoreModal'), {
+		        const modalElement = document.getElementById('scoreModal');
+		        scoreModal = new bootstrap.Modal(modalElement, {
 		            backdrop: 'static',
 		            keyboard: false,
 		            focus: true
 		        });
+		        
+		        // Bootstrap의 기본 transition 이벤트 제거
+		        modalElement.addEventListener('show.bs.modal', function (event) {
+		            event.preventDefault();
+		            this.classList.add('show');
+		            this.style.display = 'block';
+		        }, false);
 		        
 		        const today = new Date();
 		        const year = today.getFullYear();
