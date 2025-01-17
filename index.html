@@ -869,8 +869,7 @@
 		        scoreModal.show();
 		
 		        setTimeout(() => {
-		            scoreInput.focus();
-		            scoreInput.select();
+		            document.getElementById('decreaseScore').focus();
 		        }, 300);
 		
 		        scoreInput.onkeypress = function(e) {
