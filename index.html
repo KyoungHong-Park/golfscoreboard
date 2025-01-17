@@ -897,12 +897,16 @@
 		            scoreInput.value = '0';
 		        }
 		        
+		        // 모달 표시 전에 입력 필드 포커스 제거
+		        scoreInput.blur();
+		        
 		        scoreModal.show();
 		
+		        // 포커스 딜레이를 더 길게 조정
 		        setTimeout(() => {
 		            scoreInput.focus();
 		            scoreInput.select();
-		        }, 300);
+		        }, 500);
 		
 		        scoreInput.onkeypress = function(e) {
 		            if (e.key === 'Enter') {
@@ -917,50 +921,53 @@
 		}
 		
 		async function saveScore() {
-			if (!db) {
-				showAlert('데이터베이스 연결 오류', true);
-				return;
-			}
+		    if (!db) {
+		        showAlert('데이터베이스 연결 오류', true);
+		        return;
+		    }
 		
-			const scoreInput = document.getElementById('scoreInput');
-			const score = parseInt(scoreInput.value);
-			
-			if (isNaN(score)) {
-				showAlert('유효한 점수를 입력해주세요', true);
-				return;
-			}
+		    const scoreInput = document.getElementById('scoreInput');
+		    const score = parseInt(scoreInput.value);
+		    
+		    if (isNaN(score)) {
+		        showAlert('유효한 점수를 입력해주세요', true);
+		        return;
+		    }
 		
-			try {
-				const gameDate = gameDateInput.value;
-				const querySnapshot = await db.collection("golfscoreboard")
-					.where("gameDate", "==", gameDate)
-					.where("teamNumber", "==", currentTeam)
-					.get();
+		    try {
+		        const gameDate = gameDateInput.value;
+		        const querySnapshot = await db.collection("golfscoreboard")
+		            .where("gameDate", "==", gameDate)
+		            .where("teamNumber", "==", currentTeam)
+		            .get();
 		
-				if (!querySnapshot.empty) {
-					const docRef = querySnapshot.docs[0].ref;
-					const docData = querySnapshot.docs[0].data();
-					const modalInfo = document.getElementById('modalInfo').textContent;
-					const hole = parseInt(modalInfo.split('/')[2]);
-					const currentHole = parseInt(docData.currentHole) || 0;
-					
-					const updates = {
-						[`hole${hole}`]: score
-					};
-					
-					if (hole > currentHole) {
-						updates.currentHole = hole;
-					}
-					
-					await docRef.update(updates);
-					scoreModal.hide();
-					scoreInput.value = '';
-					showAlert('점수가 저장되었습니다');
-				}
-			} catch (error) {
-				console.error("Error saving score:", error);
-				showAlert('점수 저장 중 오류가 발생했습니다.', true);
-			}
+		        if (!querySnapshot.empty) {
+		            const docRef = querySnapshot.docs[0].ref;
+		            const docData = querySnapshot.docs[0].data();
+		            const modalInfo = document.getElementById('modalInfo').textContent;
+		            const hole = parseInt(modalInfo.split('/')[2]);
+		            const currentHole = parseInt(docData.currentHole) || 0;
+		            
+		            const updates = {
+		                [`hole${hole}`]: score
+		            };
+		            
+		            if (hole > currentHole) {
+		                updates.currentHole = hole;
+		            }
+		            
+		            await docRef.update(updates);
+		            
+		            // 포커스 제거 후 모달 닫기
+		            scoreInput.blur();
+		            scoreModal.hide();
+		            
+		            showAlert('점수가 저장되었습니다');
+		        }
+		    } catch (error) {
+		        console.error("Error saving score:", error);
+		        showAlert('점수 저장 중 오류가 발생했습니다.', true);
+		    }
 		}
 		
 		window.addEventListener('offline', function() {
