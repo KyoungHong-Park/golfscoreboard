@@ -829,17 +829,17 @@
 		}
 		
 		function calculateTotal(data) {
-			try {
-				let total = 0;
-				for (let i = 1; i <= 18; i++) {
-					const score = parseInt(data[`hole${i}`]) || 0;
-					total += score;
-				}
-				return total.toString();
-			} catch (error) {
-				console.error("Error calculating total:", error);
-				return '0';
-			}
+		    try {
+		        let total = 0;
+		        for (let i = 1; i <= 18; i++) {
+		            const score = data[`hole${i}`];
+		            total += score ? parseInt(score) : 0;  // 여기가 수정된 부분
+		        }
+		        return total.toString();
+		    } catch (error) {
+		        console.error("Error calculating total:", error);
+		        return '0';
+		    }
 		}
 		
 		async function openScoreModal(teamNumber, teamMembers, hole) {
