@@ -739,50 +739,50 @@
 		}
 		
 		function createTeamRow(data, start, end, isCurrentTeam) {
-			try {
-				const row = document.createElement('tr');
-				row.innerHTML = `
-					<td>${data.teamNumber}</td>
-					<td class="team-members">${formatTeamMembersShort(data.teamMembers)}</td>
-				`;
+		    try {
+		        const row = document.createElement('tr');
+		        row.innerHTML = `
+		            <td>${data.teamNumber}</td>
+		            <td class="team-members">${formatTeamMembersShort(data.teamMembers)}</td>
+		        `;
 		
-				const currentHole = parseInt(data.currentHole) || 0;
+		        const currentHole = parseInt(data.currentHole) || 0;
 		
-				for (let i = start; i <= end; i++) {
-					const cell = document.createElement('td');
-					cell.classList.add('score-cell');
-					
-					const currentScore = data[`hole${i}`];
-					cell.textContent = currentScore !== undefined ? currentScore : '0';
-					
-					if (currentHole > 0) {
-						if (i === currentHole) {
-							cell.classList.add('current-hole');
-						} else if (i < currentHole) {
-							cell.classList.add('completed-hole');
-						}
-					}
+		        for (let i = start; i <= end; i++) {
+		            const cell = document.createElement('td');
+		            cell.classList.add('score-cell');
+		            
+		            const currentScore = data[`hole${i}`];
+		            cell.textContent = currentScore ? currentScore : '-';  // 여기가 수정된 부분
+		            
+		            if (currentHole > 0) {
+		                if (i === currentHole) {
+		                    cell.classList.add('current-hole');
+		                } else if (i < currentHole) {
+		                    cell.classList.add('completed-hole');
+		                }
+		            }
 		
-					if (isCurrentTeam && !isGuest) {
-						cell.onclick = (e) => {
-							e.preventDefault();
-							e.stopPropagation();
-							openScoreModal(data.teamNumber, data.teamMembers, i);
-						};
-					}
+		            if (isCurrentTeam && !isGuest) {
+		                cell.onclick = (e) => {
+		                    e.preventDefault();
+		                    e.stopPropagation();
+		                    openScoreModal(data.teamNumber, data.teamMembers, i);
+		                };
+		            }
 		
-					row.appendChild(cell);
-				}
+		            row.appendChild(cell);
+		        }
 		
-				if (!isCurrentTeam || isGuest) {
-					row.classList.add('disabled');
-				}
+		        if (!isCurrentTeam || isGuest) {
+		            row.classList.add('disabled');
+		        }
 		
-				return row;
-			} catch (error) {
-				console.error("Error creating team row:", error);
-				return null;
-			}
+		        return row;
+		    } catch (error) {
+		        console.error("Error creating team row:", error);
+		        return null;
+		    }
 		}
 		
     		function formatTeamMembersShort(members) {
