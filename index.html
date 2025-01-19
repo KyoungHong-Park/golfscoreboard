@@ -739,73 +739,82 @@
 		}
 		
 		function createTeamRow(data, start, end, isCurrentTeam) {
-		    try {
-		        const row = document.createElement('tr');
-		        row.innerHTML = `
-		            <td>${data.teamNumber}</td>
-		            <td class="team-members">${formatTeamMembersShort(data.teamMembers)}</td>
-		        `;
-		
-		        const currentHole = parseInt(data.currentHole) || 0;
-		
-		        for (let i = start; i <= end; i++) {
-		            const cell = document.createElement('td');
-		            cell.classList.add('score-cell');
-		            
-		            const currentScore = data[`hole${i}`];
-		            cell.textContent = currentScore ? currentScore : '-';  // 여기가 수정된 부분
-		            
-		            if (currentHole > 0) {
-		                if (i === currentHole) {
-		                    cell.classList.add('current-hole');
-		                } else if (i < currentHole) {
-		                    cell.classList.add('completed-hole');
-		                }
-		            }
-		
-		            if (isCurrentTeam && !isGuest) {
-		                cell.onclick = (e) => {
-		                    e.preventDefault();
-		                    e.stopPropagation();
-		                    openScoreModal(data.teamNumber, data.teamMembers, i);
-		                };
-		            }
-		
-		            row.appendChild(cell);
-		        }
-		
-		        if (!isCurrentTeam || isGuest) {
-		            row.classList.add('disabled');
-		        }
-		
-		        return row;
-		    } catch (error) {
-		        console.error("Error creating team row:", error);
-		        return null;
-		    }
+			try {
+				const row = document.createElement('tr');
+				row.innerHTML = `
+					<td>${data.teamNumber}</td>
+					<td class="team-members">${formatTeamMembersShort(data.teamMembers)}</td>
+				`;
+
+				const currentHole = parseInt(data.currentHole) || 0;
+
+				for (let i = start; i <= end; i++) {
+					const cell = document.createElement('td');
+					cell.classList.add('score-cell');
+					
+					const currentScore = data[`hole${i}`];
+					
+					// 현재 홀보다 이전 홀의 경우 0을 표시, 이후 홀은 '-' 표시
+					if (i <= currentHole) {
+						cell.textContent = currentScore || '0';  // 이전 홀은 0 표시
+					} else if (i === currentHole && currentScore) {
+						cell.textContent = currentScore;  // 현재 홀에 스코어가 있으면 표시
+					} else {
+						cell.textContent = '-';  // 나머지는 '-' 표시
+					}
+					
+					if (currentHole > 0) {
+						if (i === currentHole) {
+							cell.classList.add('current-hole');
+						} else if (i < currentHole) {
+							cell.classList.add('completed-hole');
+						}
+					}
+
+					if (isCurrentTeam && !isGuest) {
+						cell.onclick = (e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							openScoreModal(data.teamNumber, data.teamMembers, i);
+						};
+					}
+
+					row.appendChild(cell);
+				}
+
+				if (!isCurrentTeam || isGuest) {
+					row.classList.add('disabled');
+				}
+
+				return row;
+			} catch (error) {
+				console.error("Error creating team row:", error);
+				return null;
+			}
 		}
+
 		
-    		function formatTeamMembersShort(members) {
-    			if (!members) return '';
-    			try {
-        			const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
-        			const rows = [];
-      				  for (let i = 0; i < memberArray.length; i += 2) {
-       				     // 첫번째 멤버의 첫 두글자 가져오기
-      				      const first = memberArray[i].split('(')[0].trim().substring(0, 2);
-         				   if (i + 1 < memberArray.length) {
-        				        // 두번째 멤버의 첫 두글자 가져오기
-          				      const second = memberArray[i + 1].split('(')[0].trim().substring(0, 2);
-          				      rows.push(`${first}, ${second}`);
-        				    } else {
-       					         rows.push(first);
-  					    }
+    	function formatTeamMembersShort(members) {
+    		if (!members) return '';
+    		try {
+        		const memberArray = members.split(',').map(m => m.trim()).filter(m => m);
+        		const rows = [];
+      			  for (let i = 0; i < memberArray.length; i += 2) {
+       			     // 첫번째 멤버의 첫 두글자 가져오기
+      			      const first = memberArray[i].split('(')[0].trim().substring(0, 2);
+        				   if (i + 1 < memberArray.length) {
+        			        // 두번째 멤버의 첫 두글자 가져오기
+         				      const second = memberArray[i + 1].split('(')[0].trim().substring(0, 2);
+         				      rows.push(`${first}, ${second}`);
+        			    } else {
+       				         rows.push(first);
   				    }
-				    return rows.join('<br>');
-			    } catch (error) {
-  			      console.error("Error formatting short team members:", error);
- 			       return '';
-			    }
+  			    }
+			    return rows.join('<br>');
+		    } catch (error) {
+  		      console.error("Error formatting short team members:", error);
+ 		       return '';
+		    }
 		}
 		
 		function formatTeamMembersFull(members) {
@@ -829,17 +838,22 @@
 		}
 		
 		function calculateTotal(data) {
-		    try {
-		        let total = 0;
-		        for (let i = 1; i <= 18; i++) {
-		            const score = data[`hole${i}`];
-		            total += score ? parseInt(score) : 0;  // 여기가 수정된 부분
-		        }
-		        return total.toString();
-		    } catch (error) {
-		        console.error("Error calculating total:", error);
-		        return '0';
-		    }
+			try {
+				let total = 0;
+				const currentHole = parseInt(data.currentHole) || 0;
+				
+				for (let i = 1; i <= 18; i++) {
+					const score = data[`hole${i}`];
+					// 현재 홀까지의 스코어만 계산에 포함
+					if (i <= currentHole) {
+						total += score ? parseInt(score) : 0;  // 값이 없으면 0으로 계산
+					}
+				}
+				return total.toString();
+			} catch (error) {
+				console.error("Error calculating total:", error);
+				return '0';
+			}
 		}
 		
 		async function openScoreModal(teamNumber, teamMembers, hole) {
