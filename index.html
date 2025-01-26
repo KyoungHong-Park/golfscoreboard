@@ -250,6 +250,42 @@
         }
     }
 
+	/* 기존 스타일 수정 */
+	body {
+	overflow: auto; /* 페이지 전체 스크롤 허용 */
+	}
+	
+	.table-responsive {
+	margin-bottom: 10px;
+	overflow: auto; /* 좌우 스크롤 허용 */
+	-webkit-overflow-scrolling: touch;
+	max-width: 100%;
+	}
+	
+	/* iOS 스크롤 최적화 */
+	.table-responsive::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 7px;
+	height: 7px;
+	}
+	
+	.table-responsive::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background-color: rgba(0,0,0,.3);
+	-webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+	}
+	
+	/* 테이블 최소 너비 설정 */
+	.score-table, .total-table {
+	min-width: 600px; /* 테이블 최소 너비 */
+	}
+	
+	.container {
+	max-width: 100%;
+	padding: 0 15px;
+	overflow-x: hidden; /* 컨테이너 밖으로 넘치는 것 방지 */
+	}
+
     /* iOS Safari optimization */
     @supports (-webkit-touch-callout: none) {
         input, select {
