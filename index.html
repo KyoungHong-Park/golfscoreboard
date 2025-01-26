@@ -34,6 +34,7 @@
        width: max-content;
        margin: 0;
        border-collapse: collapse;
+       position: relative;
    }
    
    .score-table th {
@@ -259,42 +260,37 @@
    .score-table th:nth-child(-n+2),
    .score-table td:nth-child(-n+2) {
        position: sticky;
-       left: 0;
-       z-index: 2;
-       border-right: 1px solid #dee2e6;
+       background-color: #fff;
    }
 
    .score-table th:first-child {
-       z-index: 3;
-       background-color: #e9ecef;
        left: 0;
-       border-right: 1px solid #dee2e6;
+       z-index: 4;
+       background-color: #e9ecef;
    }
 
    .score-table td:first-child {
-       z-index: 3;
-       background-color: #fff;
        left: 0;
-       border-right: 1px solid #dee2e6;
+       z-index: 2;
+       background-color: #fff;
    }
 
    .score-table th:nth-child(2) {
-       z-index: 3;
-       background-color: #e9ecef;
        left: 22px;
-       border-right: 1px solid #dee2e6;
+       z-index: 4;
+       background-color: #e9ecef;
    }
 
    .score-table td:nth-child(2) {
-       z-index: 3;
-       background-color: #fff;
        left: 22px;
-       border-right: 1px solid #dee2e6;
+       z-index: 2;
+       background-color: #fff;
    }
 
-   .score-table th:nth-child(3),
-   .score-table td:nth-child(3) {
-       border-left: none;
+   /* 고정된 열의 오른쪽 테두리 */
+   .score-table th:nth-child(-n+2),
+   .score-table td:nth-child(-n+2) {
+       border-right: 2px solid #dee2e6;
    }
    
    @media (max-width: 576px) {
