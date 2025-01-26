@@ -261,30 +261,40 @@
        position: sticky;
        left: 0;
        z-index: 2;
+       border-right: 1px solid #dee2e6;
    }
 
    .score-table th:first-child {
        z-index: 3;
        background-color: #e9ecef;
        left: 0;
+       border-right: 1px solid #dee2e6;
    }
 
    .score-table td:first-child {
        z-index: 3;
        background-color: #fff;
        left: 0;
+       border-right: 1px solid #dee2e6;
    }
 
    .score-table th:nth-child(2) {
        z-index: 3;
        background-color: #e9ecef;
        left: 22px;
+       border-right: 1px solid #dee2e6;
    }
 
    .score-table td:nth-child(2) {
        z-index: 3;
        background-color: #fff;
        left: 22px;
+       border-right: 1px solid #dee2e6;
+   }
+
+   .score-table th:nth-child(3),
+   .score-table td:nth-child(3) {
+       border-left: none;
    }
    
    @media (max-width: 576px) {
